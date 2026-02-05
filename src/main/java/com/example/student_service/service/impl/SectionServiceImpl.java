@@ -26,6 +26,7 @@ public class SectionServiceImpl implements SectionService {
     public Section updateSection(Long id, Section section) {
         Section existing = getSectionById(id);
         existing.setSectionName(section.getSectionName());
+        existing.setIsActive(section.getIsActive());
         return sectionRepository.save(existing);
     }
 
@@ -42,8 +43,7 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public void deleteSection(Long id) {
-        Section section = getSectionById(id);
-        section.setIsActive(false); // soft delete
-        sectionRepository.save(section);
+         sectionRepository.deleteById(Math.toIntExact(id));
+
     }
 }

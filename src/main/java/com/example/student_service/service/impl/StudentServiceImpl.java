@@ -1,7 +1,8 @@
 package com.example.student_service.service.impl;
 
-import com.example.student_service.entity.Student;
-import com.example.student_service.repository.StudentRepository;
+import com.example.student_service.entity.*;
+import com.example.student_service.entity.Class;
+import com.example.student_service.repository.*;
 import com.example.student_service.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,10 @@ import java.util.Random;
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
+    private  final ClassRepository classRepository;
+    private  final SectionRepository sectionRepository;
+    private  final ShiftRepository shiftRepository;
+    private  final StudentGroupRepository studentGroupRepository;
 
     // Generate unique 8-digit student_system_id
     private String generateStudentSystemId() {
@@ -27,10 +32,37 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student createStudent(Student student) {
+
         student.setIsActive(true);
         student.setStudentSystemId(generateStudentSystemId());
+
+        // Class
+        if (student.getStudentClass() != null) {
+            Integer classId = student.getStudentClass().getId();
+            Class classEntity = classRepository.getReferenceById(classId);
+            student.setStudentClass(classEntity);
+        }
+
+        // Shift
+        if (student.getShift() != null) {
+            Integer shiftId = student.getShift().getId();
+            Shift shiftEntity = shiftRepository.getReferenceById(shiftId);
+            student.setShift(shiftEntity);
+        }
+
+        // Section
+
+        // Group Subject
+        if (student.getStudentGroup() != null) {
+            Integer groupId = student.getStudentGroup().getId();
+            StudentGroup groupEntity =
+                    studentGroupRepository.getReferenceById(groupId);
+            student.setStudentGroup(groupEntity);
+        }
+
         return studentRepository.save(student);
     }
+
 
     @Override
     public Student getStudentById(Long id) {
@@ -51,7 +83,7 @@ public class StudentServiceImpl implements StudentService {
     public Student updateStudent(Long id, Student student) {
         return studentRepository.findById(id)
                 .map(existing -> {
-                    // update all relevant fields
+                    // Update all simple fields
                     existing.setNameBangla(student.getNameBangla());
                     existing.setNameEnglish(student.getNameEnglish());
                     existing.setFatherNameBangla(student.getFatherNameBangla());
@@ -79,14 +111,32 @@ public class StudentServiceImpl implements StudentService {
                     existing.setPermanentThana(student.getPermanentThana());
                     existing.setDob(student.getDob());
                     existing.setNationality(student.getNationality());
-                    existing.setStudentClass(student.getStudentClass());
-                    existing.setSection(student.getSection());
-                    existing.setShift(student.getShift());
-                    existing.setStudentGroup(student.getStudentGroup());
+
+                    // 🔹 Reattach managed entities for relations
+
+                    // Class
+                    if (student.getStudentClass() != null) {
+                        Integer classId = student.getStudentClass().getId();
+                        existing.setStudentClass(classRepository.getReferenceById(classId));
+                    }
+
+                    // Shift
+                    if (student.getShift() != null) {
+                        Integer shiftId = student.getShift().getId();
+                        existing.setShift(shiftRepository.getReferenceById(shiftId));
+                    }
+
+                    // Student Group
+                    if (student.getStudentGroup() != null) {
+                        Integer groupId = student.getStudentGroup().getId();
+                        existing.setStudentGroup(studentGroupRepository.getReferenceById(groupId));
+                    }
+
                     return studentRepository.save(existing);
                 })
                 .orElse(null);
     }
+
 
     @Override
     public void deleteStudent(Long id) {

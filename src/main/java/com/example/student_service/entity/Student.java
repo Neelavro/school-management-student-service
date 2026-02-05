@@ -109,12 +109,8 @@ public class Student {
 
     // Relations
     @ManyToOne
-    @JoinColumn(name = "class_id", nullable = false)
+    @JoinColumn(name = "class_id")
     private Class studentClass; // renamed Class -> ClassEntity to avoid Java keyword conflict
-
-    @ManyToOne
-    @JoinColumn(name = "section_id")
-    private Section section; // nullable, assigned later
 
     @ManyToOne
     @JoinColumn(name = "shift_id")

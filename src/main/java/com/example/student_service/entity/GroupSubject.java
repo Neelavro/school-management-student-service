@@ -17,8 +17,6 @@ public class GroupSubject {
     @Column(name = "group_name")
     private String groupName;
 
-    private String subject;
-
     @Column(name = "is_active")
     private Boolean isActive = true;
 }

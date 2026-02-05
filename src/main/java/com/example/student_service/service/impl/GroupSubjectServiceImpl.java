@@ -30,15 +30,18 @@ public class GroupSubjectServiceImpl implements GroupSubjectService {
     @Override
     public GroupSubject getGroupSubjectById(Integer id) {
         Optional<GroupSubject> groupSubject = groupSubjectRepository.findById(id);
+
         return groupSubject.orElse(null);
     }
 
     @Override
     public GroupSubject updateGroupSubject(Integer id, GroupSubject groupSubject) {
+        System.out.println("OBJECT: "+ groupSubject.getGroupName());
+        System.out.println("OBJECT: "+ groupSubject.getIsActive());
         GroupSubject existing = getGroupSubjectById(id);
         if (existing != null) {
+
             existing.setGroupName(groupSubject.getGroupName());
-            existing.setSubject(groupSubject.getSubject());
             existing.setIsActive(groupSubject.getIsActive());
             return groupSubjectRepository.save(existing);
         }
