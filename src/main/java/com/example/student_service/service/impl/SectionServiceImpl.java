@@ -18,17 +18,31 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public Section createSection(Section section) {
+        if (section.getClassEntity() == null) {
+            throw new RuntimeException("Class must be set for the section");
+        }
         section.setIsActive(true);
         return sectionRepository.save(section);
     }
+    @Override
+    public List<Section> getSectionsByClassId(Integer classId) {
+        return sectionRepository.findAllByClassEntityIdAndIsActiveTrue(classId);
+    }
+
 
     @Override
     public Section updateSection(Long id, Section section) {
         Section existing = getSectionById(id);
         existing.setSectionName(section.getSectionName());
         existing.setIsActive(section.getIsActive());
+
+        if (section.getClassEntity() != null) {
+            existing.setClassEntity(section.getClassEntity());
+        }
+
         return sectionRepository.save(existing);
     }
+
 
     @Override
     public Section getSectionById(Long id) {

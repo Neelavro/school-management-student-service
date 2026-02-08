@@ -14,8 +14,12 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "section_name")
+    @Column(name = "section_name",nullable = false)
     private String sectionName;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id", nullable = false)
+    private Class classEntity;
 
     @Column(name = "is_active")
     private Boolean isActive = true;

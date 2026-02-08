@@ -26,7 +26,7 @@ public class Student {
     @Column(name = "name_english", nullable = false)
     private String nameEnglish;
 
-    // Father's Info (required)
+    // Father's Info
     @Column(name = "father_name_bangla", nullable = false)
     private String fatherNameBangla;
 
@@ -110,7 +110,11 @@ public class Student {
     // Relations
     @ManyToOne
     @JoinColumn(name = "class_id")
-    private Class studentClass; // renamed Class -> ClassEntity to avoid Java keyword conflict
+    private Class studentClass; // renamed Class -> ClassEntity
+
+    @ManyToOne
+    @JoinColumn(name = "section_id")
+    private Section section; // NEW: each student belongs to a section
 
     @ManyToOne
     @JoinColumn(name = "shift_id")

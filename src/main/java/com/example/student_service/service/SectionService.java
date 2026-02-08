@@ -1,7 +1,6 @@
 package com.example.student_service.service;
 
 import com.example.student_service.entity.Section;
-
 import java.util.List;
 
 public interface SectionService {
@@ -13,6 +12,8 @@ public interface SectionService {
     Section getSectionById(Long id);
 
     List<Section> getAllActiveSections();
+
+    List<Section> getSectionsByClassId(Integer classId); // ✅ NEW
 
     void deleteSection(Long id); // soft delete
 }

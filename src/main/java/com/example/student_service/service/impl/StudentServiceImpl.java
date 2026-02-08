@@ -119,6 +119,10 @@ public class StudentServiceImpl implements StudentService {
                         Integer classId = student.getStudentClass().getId();
                         existing.setStudentClass(classRepository.getReferenceById(classId));
                     }
+                    if (student.getSection() != null) {
+                        Integer sectionId = Math.toIntExact(student.getSection().getId());
+                        existing.setSection(sectionRepository.getReferenceById(sectionId));
+                    }
 
                     // Shift
                     if (student.getShift() != null) {

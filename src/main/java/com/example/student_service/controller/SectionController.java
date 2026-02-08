@@ -20,11 +20,22 @@ public class SectionController {
 
     @PostMapping
     public ResponseEntity<Section> create(@RequestBody Section section) {
+        if (section.getClassEntity() == null || section.getClassEntity().getId() == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(null);  // Or throw a proper exception
+        }
         return new ResponseEntity<>(
                 sectionService.createSection(section),
                 HttpStatus.CREATED
         );
     }
+    @GetMapping("/class/{classId}")
+    public ResponseEntity<List<Section>> getAllByClass(@PathVariable Integer classId) {
+        List<Section> sections = sectionService.getSectionsByClassId(classId);
+        return ResponseEntity.ok(sections);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Section> update(
