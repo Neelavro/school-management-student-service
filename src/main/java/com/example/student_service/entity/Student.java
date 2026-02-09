@@ -14,23 +14,27 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // internal DB ID
+    private Long id;
 
-    @Column(name = "student_system_id", nullable = false, unique = true, length = 8)
-    private String studentSystemId; // 8-digit system-generated ID
+    @Column(name = "student_system_id", unique = true)
+    private String studentSystemId;
 
     // Student Name
-    @Column(name = "name_bangla", nullable = false)
+    @Column(name = "name_bangla")
     private String nameBangla;
 
-    @Column(name = "name_english", nullable = false)
+    @Column(name = "name_english")
     private String nameEnglish;
 
+    // Class Roll (NEW)
+    @Column(name = "class_roll")
+    private Integer classRoll;
+
     // Father's Info
-    @Column(name = "father_name_bangla", nullable = false)
+    @Column(name = "father_name_bangla")
     private String fatherNameBangla;
 
-    @Column(name = "father_name_english", nullable = false)
+    @Column(name = "father_name_english")
     private String fatherNameEnglish;
 
     @Column(name = "father_occupation")
@@ -107,24 +111,27 @@ public class Student {
     @Column(name = "nationality")
     private String nationality;
 
-    // Relations
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "class_id")
-    private Class studentClass; // renamed Class -> ClassEntity
+    private Class studentClass;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "section_id")
-    private Section section; // NEW: each student belongs to a section
+    private Section section;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "shift_id")
-    private Shift shift; // nullable, assigned later
+    private Shift shift;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "student_group_id")
-    private StudentGroup studentGroup; // nullable, assigned later
+    private StudentGroup studentGroup;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "gender_id")
+    private Gender gender;
 
     // Status
     @Column(name = "is_active")
-    private Boolean isActive = true;
+    private Boolean isActive;
 }

@@ -114,3 +114,1578 @@
        add constraint FKovvvn9ce56xur7ws8bfdobr7d 
        foreign key (student_group_id) 
        references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        gender_id integer,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKd2qb7etol4a1hl6quhu3cuhkl 
+       foreign key (gender_id) 
+       references gender (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        gender_id integer,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKd2qb7etol4a1hl6quhu3cuhkl 
+       foreign key (gender_id) 
+       references gender (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        gender_id integer not null,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKd2qb7etol4a1hl6quhu3cuhkl 
+       foreign key (gender_id) 
+       references gender (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        gender_id integer not null,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKd2qb7etol4a1hl6quhu3cuhkl 
+       foreign key (gender_id) 
+       references gender (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        gender_id integer not null,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKd2qb7etol4a1hl6quhu3cuhkl 
+       foreign key (gender_id) 
+       references gender (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        gender_id integer not null,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKd2qb7etol4a1hl6quhu3cuhkl 
+       foreign key (gender_id) 
+       references gender (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        gender_id integer not null,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKd2qb7etol4a1hl6quhu3cuhkl 
+       foreign key (gender_id) 
+       references gender (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        gender_id integer not null,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKd2qb7etol4a1hl6quhu3cuhkl 
+       foreign key (gender_id) 
+       references gender (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);
+
+    create table academic_year (
+        id integer not null auto_increment,
+        is_active bit,
+        year_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table class (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table gender (
+        id integer not null auto_increment,
+        is_active bit,
+        gender varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table group_subject (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table section (
+        class_id integer not null,
+        is_active bit,
+        id bigint not null auto_increment,
+        section_name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table shift (
+        id integer not null auto_increment,
+        is_active bit,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student (
+        class_id integer,
+        class_roll integer,
+        dob date,
+        gender_id integer,
+        is_active bit,
+        shift_id integer,
+        student_group_id integer,
+        id bigint not null auto_increment,
+        section_id bigint,
+        current_district varchar(255),
+        current_holding_no varchar(255),
+        current_road_or_village varchar(255),
+        current_thana varchar(255),
+        father_monthly_salary varchar(255),
+        father_name_bangla varchar(255),
+        father_name_english varchar(255),
+        father_occupation varchar(255),
+        father_phone varchar(255),
+        guardian_monthly_salary varchar(255),
+        guardian_name_bangla varchar(255),
+        guardian_name_english varchar(255),
+        guardian_occupation varchar(255),
+        guardian_phone varchar(255),
+        mother_monthly_salary varchar(255),
+        mother_name_bangla varchar(255),
+        mother_name_english varchar(255),
+        mother_occupation varchar(255),
+        mother_phone varchar(255),
+        name_bangla varchar(255),
+        name_english varchar(255),
+        nationality varchar(255),
+        permanent_district varchar(255),
+        permanent_holding_no varchar(255),
+        permanent_road_or_village varchar(255),
+        permanent_thana varchar(255),
+        student_system_id varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    create table student_group (
+        id integer not null auto_increment,
+        is_active bit,
+        group_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB;
+
+    alter table student 
+       add constraint UKnk1lut8d4qplj0hgjp4m4gr3n unique (student_system_id);
+
+    alter table section 
+       add constraint FK8l8i27bhro0d5mjvx6xgw1w4m 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKd2qb7etol4a1hl6quhu3cuhkl 
+       foreign key (gender_id) 
+       references gender (id);
+
+    alter table student 
+       add constraint FKj1c0de75pterue04btw6w5mh8 
+       foreign key (section_id) 
+       references section (id);
+
+    alter table student 
+       add constraint FKn157l87fsox6g7grjyeey8vg9 
+       foreign key (shift_id) 
+       references shift (id);
+
+    alter table student 
+       add constraint FKdwhkib64u47wc4yo4hk0cub90 
+       foreign key (class_id) 
+       references class (id);
+
+    alter table student 
+       add constraint FKovvvn9ce56xur7ws8bfdobr7d 
+       foreign key (student_group_id) 
+       references student_group (id);

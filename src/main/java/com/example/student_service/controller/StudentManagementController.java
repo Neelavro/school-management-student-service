@@ -1,13 +1,8 @@
 package com.example.student_service.controller;
 
+import com.example.student_service.entity.*;
 import com.example.student_service.entity.Class;
-import com.example.student_service.entity.Section;
-import com.example.student_service.entity.Shift;
-import com.example.student_service.entity.StudentGroup;
-import com.example.student_service.service.ClassService;
-import com.example.student_service.service.SectionService;
-import com.example.student_service.service.ShiftService;
-import com.example.student_service.service.StudentGroupService;
+import com.example.student_service.service.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,17 +19,20 @@ public class StudentManagementController {
     private final SectionService sectionService;
     private final ShiftService shiftService;
     private final StudentGroupService studentGroupService;
+    private final GenderService genderService;
 
     public StudentManagementController(
             ClassService classService,
             SectionService sectionService,
             ShiftService shiftService,
-            StudentGroupService studentGroupService
+            StudentGroupService studentGroupService,
+            GenderService genderService
     ) {
         this.classService = classService;
         this.sectionService = sectionService;
         this.shiftService = shiftService;
         this.studentGroupService = studentGroupService;
+        this.genderService = genderService;
     }
 
     @GetMapping("/init")
@@ -44,12 +42,14 @@ public class StudentManagementController {
         List<Section> sections = sectionService.getAllActiveSections();
         List<Shift> shifts = shiftService.getAllActiveShifts();
         List<StudentGroup> studentGroups = studentGroupService.getAllActiveGroups();
+        List<Gender> genders = genderService.getAllGenders();
 
         StudentManagementInitResponse response = new StudentManagementInitResponse(
                 classes,
                 sections,
                 shifts,
-                studentGroups
+                studentGroups,
+                genders
         );
 
         return ResponseEntity.ok(response);
@@ -65,5 +65,6 @@ public class StudentManagementController {
         private List<Section> sections;
         private List<Shift> shifts;
         private List<StudentGroup> studentGroups;
+        private List<Gender> genders;
     }
 }

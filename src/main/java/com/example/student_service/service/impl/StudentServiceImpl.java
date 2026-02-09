@@ -19,28 +19,52 @@ public class StudentServiceImpl implements StudentService {
     private  final SectionRepository sectionRepository;
     private  final ShiftRepository shiftRepository;
     private  final StudentGroupRepository studentGroupRepository;
+    private  final GenderRepository genderRepository;
 
     // Generate unique 8-digit student_system_id
     private String generateStudentSystemId() {
-        Random random = new Random();
+        String yearPrefix = String.valueOf(java.time.Year.now().getValue()); // e.g. 2026
         String id;
+
         do {
-            id = String.format("%08d", random.nextInt(100_000_000));
+            String randomPart = String.format("%06d", new Random().nextInt(1_000_000));
+            id = yearPrefix + randomPart; // e.g. 2026001234
         } while (studentRepository.existsByStudentSystemId(id));
+
         return id;
     }
+    private void assignOrUpdateStudentSystemId(Student student, Student existing) {
+        String newId = student.getStudentSystemId();
+
+        if (newId == null || newId.isBlank()) {
+            // generate if missing
+            existing.setStudentSystemId(generateStudentSystemId());
+        } else if (!newId.equals(existing.getStudentSystemId())) {
+            // only update if different
+            if (studentRepository.existsByStudentSystemId(newId)) {
+                throw new IllegalArgumentException("studentSystemId already exists: " + newId);
+            }
+            existing.setStudentSystemId(newId);
+        }
+    }
+
 
     @Override
     public Student createStudent(Student student) {
 
         student.setIsActive(true);
-        student.setStudentSystemId(generateStudentSystemId());
+        assignOrUpdateStudentSystemId(student,student);
 
         // Class
         if (student.getStudentClass() != null) {
             Integer classId = student.getStudentClass().getId();
-            Class classEntity = classRepository.getReferenceById(classId);
+            Class classEntity = classRepository.getById(classId);
             student.setStudentClass(classEntity);
+        }
+        if (student.getGender() != null) {
+            Integer genderId = student.getGender().getId();
+            Gender gender = genderRepository.getById(genderId);
+            student.setGender(gender);
         }
 
         // Shift
@@ -51,12 +75,17 @@ public class StudentServiceImpl implements StudentService {
         }
 
         // Section
+        if (student.getSection() != null) {
+            Integer sectionId = Math.toIntExact(student.getSection().getId());
+            Shift shiftEntity = shiftRepository.getById(sectionId);
+            student.setShift(shiftEntity);
+        }
 
         // Group Subject
         if (student.getStudentGroup() != null) {
             Integer groupId = student.getStudentGroup().getId();
             StudentGroup groupEntity =
-                    studentGroupRepository.getReferenceById(groupId);
+                    studentGroupRepository.getById(groupId);
             student.setStudentGroup(groupEntity);
         }
 
@@ -81,9 +110,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student updateStudent(Long id, Student student) {
+        boolean x = studentRepository.existsById(id);
+        System.out.println("STUDENT FOUND : "+x);
         return studentRepository.findById(id)
                 .map(existing -> {
                     // Update all simple fields
+                    existing.setClassRoll(student.getClassRoll());
                     existing.setNameBangla(student.getNameBangla());
                     existing.setNameEnglish(student.getNameEnglish());
                     existing.setFatherNameBangla(student.getFatherNameBangla());
@@ -119,6 +151,11 @@ public class StudentServiceImpl implements StudentService {
                         Integer classId = student.getStudentClass().getId();
                         existing.setStudentClass(classRepository.getReferenceById(classId));
                     }
+
+                    if (student.getGender() != null) {
+                        Integer genderId = student.getGender().getId();
+                        existing.setGender(genderRepository.getReferenceById(genderId));
+                    }
                     if (student.getSection() != null) {
                         Integer sectionId = Math.toIntExact(student.getSection().getId());
                         existing.setSection(sectionRepository.getReferenceById(sectionId));
@@ -135,7 +172,7 @@ public class StudentServiceImpl implements StudentService {
                         Integer groupId = student.getStudentGroup().getId();
                         existing.setStudentGroup(studentGroupRepository.getReferenceById(groupId));
                     }
-
+                    assignOrUpdateStudentSystemId(student, existing);
                     return studentRepository.save(existing);
                 })
                 .orElse(null);
@@ -146,7 +183,7 @@ public class StudentServiceImpl implements StudentService {
     public void deleteStudent(Long id) {
         studentRepository.findById(id).ifPresent(student -> {
             student.setIsActive(false); // soft delete
-            studentRepository.save(student);
+            studentRepository.delete(student);
         });
     }
 }
