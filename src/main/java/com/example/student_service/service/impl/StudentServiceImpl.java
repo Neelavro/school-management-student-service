@@ -23,15 +23,23 @@ public class StudentServiceImpl implements StudentService {
 
     // Generate unique 8-digit student_system_id
     private String generateStudentSystemId() {
-        String yearPrefix = String.valueOf(java.time.Year.now().getValue()); // e.g. 2026
-        String id;
+        String yearPrefix = String.valueOf(java.time.Year.now().getValue()); // e.g. "2026"
 
-        do {
-            String randomPart = String.format("%06d", new Random().nextInt(1_000_000));
-            id = yearPrefix + randomPart; // e.g. 2026001234
-        } while (studentRepository.existsByStudentSystemId(id));
+        // Find the highest existing ID for the current year
+        String maxId = studentRepository.findMaxStudentSystemIdByYear(yearPrefix);
 
-        return id;
+        int nextNumber;
+        if (maxId == null || maxId.isEmpty()) {
+            // First student of this year
+            nextNumber = 1;
+        } else {
+            // Extract the last 4 digits and increment
+            String lastFourDigits = maxId.substring(4); // Get digits after year
+            nextNumber = Integer.parseInt(lastFourDigits) + 1;
+        }
+
+        // Format as 8 digits: 4-digit year + 4-digit sequential number
+        return yearPrefix + String.format("%04d", nextNumber);
     }
     private void assignOrUpdateStudentSystemId(Student student, Student existing) {
         String newId = student.getStudentSystemId();
