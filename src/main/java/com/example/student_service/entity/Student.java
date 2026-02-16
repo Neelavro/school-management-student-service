@@ -136,6 +136,10 @@ public class Student {
     @JoinColumn(name = "gender_section_id", nullable = true)
     private GenderSection genderSection;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "student_status_id")
+    private StudentStatus studentStatus;
+
     // Status
     @Column(name = "is_active")
     private Boolean isActive;

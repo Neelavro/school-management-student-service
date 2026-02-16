@@ -19,17 +19,20 @@ public class StudentManagementController {
     private final ShiftService shiftService;
     private final StudentGroupService studentGroupService;
     private final GenderService genderService;
+    private final StudentService studentService;
 
     public StudentManagementController(
             GenderSectionService genderSectionService,
             ShiftService shiftService,
             StudentGroupService studentGroupService,
-            GenderService genderService
+            GenderService genderService,
+            StudentService studentService
     ) {
         this.genderSectionService = genderSectionService;
         this.shiftService = shiftService;
         this.studentGroupService = studentGroupService;
         this.genderService = genderService;
+        this.studentService = studentService;
     }
 
     @GetMapping("/init")
@@ -38,12 +41,14 @@ public class StudentManagementController {
         List<Shift> shifts = shiftService.getAllActiveShifts();
         List<StudentGroup> studentGroups = studentGroupService.getAllActiveGroups();
         List<Gender> genders = genderService.getAllGenders();
+        List<StudentStatus> statuses = studentService.getStudentStatus();
 
         StudentManagementInitResponse response = new StudentManagementInitResponse(
                 sections,
                 shifts,
                 studentGroups,
-                genders
+                genders,
+                statuses
         );
 
         return ResponseEntity.ok(response);
@@ -59,5 +64,6 @@ public class StudentManagementController {
         private List<Shift> shifts;
         private List<StudentGroup> studentGroups;
         private List<Gender> genders;
+        private List<StudentStatus> statuses;
     }
 }

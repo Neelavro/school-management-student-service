@@ -21,6 +21,7 @@ public class StudentServiceImpl implements StudentService {
     private  final ShiftRepository shiftRepository;
     private  final StudentGroupRepository studentGroupRepository;
     private  final GenderRepository genderRepository;
+    private  final StudentStatusRepository studentStatusRepository;
 
     // Generate unique 8-digit student_system_id
     private String generateStudentSystemId() {
@@ -102,6 +103,12 @@ public class StudentServiceImpl implements StudentService {
             StudentGroup groupEntity =
                     studentGroupRepository.getById(groupId);
             student.setStudentGroup(groupEntity);
+        }
+
+        if (student.getStudentStatus() != null) {
+            Integer studentStatusId = student.getStudentStatus().getId();
+            StudentStatus studentStatus = studentStatusRepository.getById(studentStatusId);
+            student.setStudentStatus(studentStatus);
         }
 
         return studentRepository.save(student);
@@ -193,10 +200,21 @@ public class StudentServiceImpl implements StudentService {
                         Integer groupId = student.getStudentGroup().getId();
                         existing.setStudentGroup(studentGroupRepository.getReferenceById(groupId));
                     }
+
+                    if (student.getStudentStatus() != null) {
+                        Integer studentStatusId = student.getStudentStatus().getId();
+                        existing.setStudentStatus(studentStatusRepository.getReferenceById(studentStatusId));
+                    }
+
                     assignOrUpdateStudentSystemId(student, existing);
                     return studentRepository.save(existing);
                 })
                 .orElse(null);
+    }
+
+    @Override
+    public List<StudentStatus> getStudentStatus(){
+        return studentStatusRepository.findAll();
     }
 
 
