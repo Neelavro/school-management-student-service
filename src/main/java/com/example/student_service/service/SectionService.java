@@ -13,7 +13,7 @@ public interface SectionService {
 
     List<Section> getAllActiveSections();
 
-    List<Section> getSectionsByClassId(Integer classId); // ✅ NEW
+    List<Section> getSectionsByClassIdAndGenderSectionId(Integer classId, Integer genderSectionId); // ✅ NEW
 
     void deleteSection(Long id); // soft delete
 }

@@ -16,6 +16,7 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private  final ClassRepository classRepository;
+    private  final GenderSectionRepository genderSectionRepository;
     private  final SectionRepository sectionRepository;
     private  final ShiftRepository shiftRepository;
     private  final StudentGroupRepository studentGroupRepository;
@@ -62,31 +63,37 @@ public class StudentServiceImpl implements StudentService {
 
         student.setIsActive(true);
         assignOrUpdateStudentSystemId(student,student);
-
-        // Class
-        if (student.getStudentClass() != null) {
-            Integer classId = student.getStudentClass().getId();
-            Class classEntity = classRepository.getById(classId);
-            student.setStudentClass(classEntity);
-        }
-        if (student.getGender() != null) {
-            Integer genderId = student.getGender().getId();
-            Gender gender = genderRepository.getById(genderId);
-            student.setGender(gender);
-        }
-
         // Shift
         if (student.getShift() != null) {
             Integer shiftId = student.getShift().getId();
             Shift shiftEntity = shiftRepository.getReferenceById(shiftId);
             student.setShift(shiftEntity);
         }
+        // Class
+        if (student.getStudentClass() != null) {
+            Integer classId = student.getStudentClass().getId();
+            Class classEntity = classRepository.getById(classId);
+            student.setStudentClass(classEntity);
+        }
+
+        if (student.getGenderSection() != null) {
+            Integer genderSectionId = student.getGenderSection().getId();
+            GenderSection genderSection = genderSectionRepository.getById(genderSectionId);
+            student.setGenderSection(genderSection);
+        }
+
+
+        if (student.getGender() != null) {
+            Integer genderId = student.getGender().getId();
+            Gender gender = genderRepository.getById(genderId);
+            student.setGender(gender);
+        }
 
         // Section
         if (student.getSection() != null) {
             Integer sectionId = Math.toIntExact(student.getSection().getId());
-            Shift shiftEntity = shiftRepository.getById(sectionId);
-            student.setShift(shiftEntity);
+            Section section = sectionRepository.getById(sectionId);
+            student.setSection(section);
         }
 
         // Group Subject
@@ -154,10 +161,21 @@ public class StudentServiceImpl implements StudentService {
 
                     // 🔹 Reattach managed entities for relations
 
+                    // Shift
+                    if (student.getShift() != null) {
+                        Integer shiftId = student.getShift().getId();
+                        existing.setShift(shiftRepository.getReferenceById(shiftId));
+                    }
+
                     // Class
                     if (student.getStudentClass() != null) {
                         Integer classId = student.getStudentClass().getId();
                         existing.setStudentClass(classRepository.getReferenceById(classId));
+                    }
+
+                    if (student.getGenderSection() != null) {
+                        Integer genderSectionId =student.getGenderSection().getId();
+                        existing.setGenderSection(genderSectionRepository.getReferenceById(genderSectionId));
                     }
 
                     if (student.getGender() != null) {
@@ -169,11 +187,6 @@ public class StudentServiceImpl implements StudentService {
                         existing.setSection(sectionRepository.getReferenceById(sectionId));
                     }
 
-                    // Shift
-                    if (student.getShift() != null) {
-                        Integer shiftId = student.getShift().getId();
-                        existing.setShift(shiftRepository.getReferenceById(shiftId));
-                    }
 
                     // Student Group
                     if (student.getStudentGroup() != null) {

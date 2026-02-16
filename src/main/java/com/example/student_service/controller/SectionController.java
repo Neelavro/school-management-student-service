@@ -1,6 +1,8 @@
 package com.example.student_service.controller;
 
+import com.example.student_service.entity.GenderSection;
 import com.example.student_service.entity.Section;
+import com.example.student_service.service.GenderSectionService;
 import com.example.student_service.service.SectionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +15,11 @@ import java.util.List;
 public class SectionController {
 
     private final SectionService sectionService;
+    private final GenderSectionService genderSectionService;
 
-    public SectionController(SectionService sectionService) {
+    public SectionController(SectionService sectionService, GenderSectionService genderSectionService) {
         this.sectionService = sectionService;
+        this.genderSectionService = genderSectionService;
     }
 
     @PostMapping
@@ -30,11 +34,21 @@ public class SectionController {
                 HttpStatus.CREATED
         );
     }
-    @GetMapping("/class/{classId}")
-    public ResponseEntity<List<Section>> getAllByClass(@PathVariable Integer classId) {
-        List<Section> sections = sectionService.getSectionsByClassId(classId);
+    @GetMapping("/class/{classId}/gender/{genderSectionId}")
+    public ResponseEntity<List<Section>> getAllByClass(
+            @PathVariable Integer classId,
+            @PathVariable Integer genderSectionId) {
+        List<Section> sections = sectionService.getSectionsByClassIdAndGenderSectionId(classId, genderSectionId);
+        System.out.println(sections);
         return ResponseEntity.ok(sections);
     }
+
+    @GetMapping("/gender-sections")
+    public ResponseEntity<List<GenderSection>> getAllGenderSections() {
+        List<GenderSection> genderSections = genderSectionService.getAllGenderSections();
+        return ResponseEntity.ok(genderSections);
+    }
+
 
 
     @PutMapping("/{id}")

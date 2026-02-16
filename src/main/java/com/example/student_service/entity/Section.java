@@ -21,6 +21,10 @@ public class Section {
     @JoinColumn(name = "class_id", nullable = false)
     private Class classEntity;
 
+    @ManyToOne
+    @JoinColumn(name = "gender_id", nullable = true)
+    private GenderSection genderSection;
+
     @Column(name = "is_active")
     private Boolean isActive = true;
 }

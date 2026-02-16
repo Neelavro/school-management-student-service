@@ -16,6 +16,10 @@ public class Class {  // Avoid naming conflict with Java 'Class'
 
     private String name;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "shift_id", nullable = true)
+    private Shift shift;
+
     @Column(name = "is_active")
     private Boolean isActive = true;
 }

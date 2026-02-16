@@ -15,21 +15,18 @@ import java.util.List;
 @RequestMapping("/api/student-management")
 public class StudentManagementController {
 
-    private final ClassService classService;
-    private final SectionService sectionService;
+    private final GenderSectionService genderSectionService;
     private final ShiftService shiftService;
     private final StudentGroupService studentGroupService;
     private final GenderService genderService;
 
     public StudentManagementController(
-            ClassService classService,
-            SectionService sectionService,
+            GenderSectionService genderSectionService,
             ShiftService shiftService,
             StudentGroupService studentGroupService,
             GenderService genderService
     ) {
-        this.classService = classService;
-        this.sectionService = sectionService;
+        this.genderSectionService = genderSectionService;
         this.shiftService = shiftService;
         this.studentGroupService = studentGroupService;
         this.genderService = genderService;
@@ -37,15 +34,12 @@ public class StudentManagementController {
 
     @GetMapping("/init")
     public ResponseEntity<StudentManagementInitResponse> getInitialData() {
-
-        List<Class> classes = classService.getAllClasses();
-        List<Section> sections = sectionService.getAllActiveSections();
+        List<GenderSection> sections = genderSectionService.getAllGenderSections();
         List<Shift> shifts = shiftService.getAllActiveShifts();
         List<StudentGroup> studentGroups = studentGroupService.getAllActiveGroups();
         List<Gender> genders = genderService.getAllGenders();
 
         StudentManagementInitResponse response = new StudentManagementInitResponse(
-                classes,
                 sections,
                 shifts,
                 studentGroups,
@@ -61,8 +55,7 @@ public class StudentManagementController {
     @Setter
     @AllArgsConstructor
     public static class StudentManagementInitResponse {
-        private List<Class> classes;
-        private List<Section> sections;
+        private List<GenderSection> sections;
         private List<Shift> shifts;
         private List<StudentGroup> studentGroups;
         private List<Gender> genders;

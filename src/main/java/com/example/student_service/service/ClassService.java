@@ -7,6 +7,7 @@ public interface ClassService {
 
     Class createClass(Class classEntity);
 
+    List<Class> getAllClassesById(Integer shiftId);
     List<Class> getAllClasses();
 
     Class getClassById(Integer id);

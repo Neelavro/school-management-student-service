@@ -25,8 +25,8 @@ public class SectionServiceImpl implements SectionService {
         return sectionRepository.save(section);
     }
     @Override
-    public List<Section> getSectionsByClassId(Integer classId) {
-        return sectionRepository.findAllByClassEntityIdAndIsActiveTrue(classId);
+    public List<Section> getSectionsByClassIdAndGenderSectionId(Integer classId, Integer genderSectionId) {
+        return sectionRepository.findAllByClassEntityIdAndGenderSectionId(classId, genderSectionId);
     }
 
 

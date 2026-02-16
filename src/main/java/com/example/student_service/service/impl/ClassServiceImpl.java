@@ -23,6 +23,10 @@ public class ClassServiceImpl implements ClassService {
     }
 
     @Override
+    public List<Class> getAllClassesById(Integer shiftId) {
+        return classRepository.findAllByShiftId(shiftId);
+    }
+    @Override
     public List<Class> getAllClasses() {
         return classRepository.findAll();
     }
@@ -38,6 +42,7 @@ public class ClassServiceImpl implements ClassService {
         Class existing = getClassById(id);
         if (existing != null) {
             existing.setName(clazz.getName());
+            existing.setShift(clazz.getShift());
             existing.setIsActive(clazz.getIsActive());
             return classRepository.save(existing);
         }

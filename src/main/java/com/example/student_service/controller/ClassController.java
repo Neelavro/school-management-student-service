@@ -21,20 +21,27 @@ public class ClassController {
     public ResponseEntity<Class> createClass(@RequestBody Class clazz) {
         return ResponseEntity.ok(classService.createClass(clazz));
     }
-
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<Class>> getAllClasses() {
-        return ResponseEntity.ok(classService.getAllClasses());
+        List<Class> classes = classService.getAllClasses();
+        return ResponseEntity.ok(classes);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Class> getClassById(@PathVariable Integer id) {
-        Class clazz = classService.getClassById(id);
-        if (clazz == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(clazz);
+    public ResponseEntity<List<Class>> getAllClassesById(@PathVariable Integer id) {
+        List<Class> classes = classService.getAllClassesById(id);
+        return ResponseEntity.ok(classes);
     }
+
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Class> getClassById(@PathVariable Integer id) {
+//        Class clazz = classService.getClassById(id);
+//        if (clazz == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//        return ResponseEntity.ok(clazz);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Class> updateClass(
