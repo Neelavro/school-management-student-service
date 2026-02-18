@@ -19,6 +19,7 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public Class createClass(Class clazz) {
+
         return classRepository.save(clazz);
     }
 
@@ -44,6 +45,7 @@ public class ClassServiceImpl implements ClassService {
             existing.setName(clazz.getName());
             existing.setShift(clazz.getShift());
             existing.setIsActive(clazz.getIsActive());
+            existing.setStudentGroup(clazz.getStudentGroup());
             return classRepository.save(existing);
         }
         return null;
