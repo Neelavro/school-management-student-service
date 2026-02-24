@@ -39,7 +39,7 @@ public class StudentImageController {
     // ✅ Soft delete an image
     @DeleteMapping("/soft-delete/{imageId}")
     public ResponseEntity<String> softDeleteImage(@PathVariable Long imageId) {
-        studentImageService.softDeleteImage(imageId);
+        studentImageService.deleteImage(imageId);
         return ResponseEntity.ok("Image soft deleted successfully");
     }
 

@@ -14,7 +14,7 @@ public interface StudentImageService {
     Optional<StudentImage> getImageByStudent(Long studentId);
 
     // Soft delete an image
-    void softDeleteImage(Long imageId);
+    void deleteImage(Long imageId);
 
     // Remove student reference without deleting image
     void detachStudentFromImage(Long imageId);
