@@ -25,7 +25,7 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public List<Class> getAllClassesById(Integer shiftId) {
-        return classRepository.findAllByShiftId(shiftId);
+        return classRepository.findAllByShiftIdAndIsActiveTrue(shiftId);
     }
     @Override
     public List<Class> getAllClasses() {
@@ -53,6 +53,10 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public void deleteClass(Integer id) {
-        classRepository.deleteById(id);
+        Class classEntity = classRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Class not found"));
+
+        classEntity.setIsActive(false);
+        classRepository.save(classEntity);
     }
 }

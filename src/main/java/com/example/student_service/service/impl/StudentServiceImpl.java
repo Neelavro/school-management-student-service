@@ -222,7 +222,7 @@ public class StudentServiceImpl implements StudentService {
     public void deleteStudent(Long id) {
         studentRepository.findById(id).ifPresent(student -> {
             student.setIsActive(false); // soft delete
-            studentRepository.delete(student);
+            studentRepository.save(student);
         });
     }
 }

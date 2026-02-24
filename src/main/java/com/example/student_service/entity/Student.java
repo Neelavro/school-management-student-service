@@ -140,6 +140,11 @@ public class Student {
     @JoinColumn(name = "student_status_id")
     private StudentStatus studentStatus;
 
+    // ✅ Single image relation
+    @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "image_id", nullable = true)
+    private StudentImage image;
+
     // Status
     @Column(name = "is_active")
     private Boolean isActive;

@@ -38,7 +38,7 @@ public class StudentGroupServiceImpl implements StudentGroupService {
 
     @Override
     public List<StudentGroup> getAllActiveGroups() {
-        return groupRepository.findAll();
+        return groupRepository.findAllByIsActiveTrue();
     }
 
     @Override

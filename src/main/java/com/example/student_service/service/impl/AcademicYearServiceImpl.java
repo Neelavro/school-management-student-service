@@ -24,7 +24,7 @@ public class AcademicYearServiceImpl implements AcademicYearService {
 
     @Override
     public List<AcademicYear> getAllAcademicYears() {
-        return academicYearRepository.findAll();
+        return academicYearRepository.findByIsActiveTrue();
     }
 
     @Override
@@ -46,6 +46,9 @@ public class AcademicYearServiceImpl implements AcademicYearService {
 
     @Override
     public void deleteAcademicYear(Integer id) {
-        academicYearRepository.deleteById(id);
-    }
-}
+        AcademicYear academicYear = academicYearRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Academic year not found"));
+
+        academicYear.setIsActive(false);
+        academicYearRepository.save(academicYear);
+    }}

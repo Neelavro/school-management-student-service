@@ -38,11 +38,14 @@ public class ShiftServiceImpl implements ShiftService {
 
     @Override
     public List<Shift> getAllActiveShifts() {
-        return shiftRepository.findAll();
+        return shiftRepository.findAllByIsActiveTrue();
     }
 
     @Override
     public void deleteShift(Long id) {
-       shiftRepository.deleteById(Math.toIntExact(id));
-    }
-}
+        Shift shift = shiftRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new RuntimeException("Shift not found"));
+
+        shift.setIsActive(false);
+        shiftRepository.save(shift);
+    }}

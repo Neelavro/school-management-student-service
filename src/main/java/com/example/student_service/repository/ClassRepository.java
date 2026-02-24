@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ClassRepository extends JpaRepository<Class, Integer> {
 
-    List<Class> findAllByShiftId(Integer shiftId);
+    List<Class> findAllByShiftIdAndIsActiveTrue(Integer shiftId);
 }

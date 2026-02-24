@@ -26,7 +26,7 @@ public class SectionServiceImpl implements SectionService {
     }
     @Override
     public List<Section> getSectionsByClassIdAndGenderSectionId(Integer classId, Integer genderSectionId) {
-        return sectionRepository.findAllByClassEntityIdAndGenderSectionId(classId, genderSectionId);
+        return sectionRepository.findAllByClassEntityIdAndGenderSectionIdAndIsActiveTrue(classId, genderSectionId);
     }
 
 
@@ -57,7 +57,10 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     public void deleteSection(Long id) {
-         sectionRepository.deleteById(Math.toIntExact(id));
+        Section section = sectionRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new RuntimeException("Section not found"));
 
+        section.setIsActive(false);
+        sectionRepository.save(section);
     }
 }
