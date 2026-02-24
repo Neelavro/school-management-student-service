@@ -218,11 +218,15 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
+//    @Override
+//    public void deleteStudent(Long id) {
+//        studentRepository.findById(id).ifPresent(student -> {
+//            student.setIsActive(false); // soft delete
+//            studentRepository.save(student);
+//        });
+//    }
     @Override
     public void deleteStudent(Long id) {
-        studentRepository.findById(id).ifPresent(student -> {
-            student.setIsActive(false); // soft delete
-            studentRepository.save(student);
-        });
+       studentRepository.deleteById(id);
     }
 }
