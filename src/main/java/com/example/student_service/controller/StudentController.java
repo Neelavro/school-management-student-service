@@ -22,17 +22,16 @@ public class StudentController {
     public ResponseEntity<Map<String, Object>> createStudent(@RequestBody Student student) {
         Map<String, Object> response = new HashMap<>();
         try {
-            studentService.createStudent(student);
+            Student createdStudent = studentService.createStudent(student);
             response.put("success", true);
             response.put("message", "Student created successfully");
+            response.put("id", createdStudent.getId());
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException ex) {
-            // Validation errors, e.g., invalid class ID or duplicate system ID
             response.put("success", false);
             response.put("message", ex.getMessage());
             return ResponseEntity.badRequest().body(response);
         } catch (Exception ex) {
-            // Unexpected errors
             response.put("success", false);
             response.put("message", "Could not create student: " + ex.getMessage());
             return ResponseEntity.internalServerError().body(response);
