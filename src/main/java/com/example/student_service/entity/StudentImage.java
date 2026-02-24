@@ -25,7 +25,7 @@ public class StudentImage {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "student_id", nullable = true)
     private Student student;
 }
