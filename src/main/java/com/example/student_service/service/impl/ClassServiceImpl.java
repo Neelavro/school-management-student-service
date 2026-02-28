@@ -1,5 +1,6 @@
 package com.example.student_service.service.impl;
 
+import com.example.student_service.dto.ReorderClassesRequest;
 import com.example.student_service.entity.Class;
 import com.example.student_service.repository.ClassRepository;
 import com.example.student_service.service.ClassService;
@@ -25,7 +26,7 @@ public class ClassServiceImpl implements ClassService {
 
     @Override
     public List<Class> getAllClassesById(Integer shiftId) {
-        return classRepository.findAllByShiftIdAndIsActiveTrue(shiftId);
+        return classRepository.findAllByShiftIdAndIsActiveTrueOrderByOrderIndex(shiftId);
     }
     @Override
     public List<Class> getAllClasses() {
@@ -45,7 +46,7 @@ public class ClassServiceImpl implements ClassService {
             existing.setName(clazz.getName());
             existing.setShift(clazz.getShift());
             existing.setIsActive(clazz.getIsActive());
-            existing.setStudentGroup(clazz.getStudentGroup());
+            existing.setStudentGroups(clazz.getStudentGroups()); // ✅ was setStudentGroup()
             return classRepository.save(existing);
         }
         return null;
@@ -58,5 +59,24 @@ public class ClassServiceImpl implements ClassService {
 
         classEntity.setIsActive(false);
         classRepository.save(classEntity);
+    }
+
+    @Override
+    public List<Class> reorderClasses(ReorderClassesRequest request) {
+        List<Integer> orderedIds = request.getClassIds();
+
+        for (int i = 0; i < orderedIds.size(); i++) {
+            Class clazz = classRepository.findById(orderedIds.get(i))
+                    .orElseThrow(() -> new RuntimeException("Class not found: " + orderedIds));
+
+            if (!clazz.getShift().getId().equals(request.getShiftId())) {
+                throw new RuntimeException("Class " + clazz.getId() + " does not belong to shift " + request.getShiftId());
+            }
+
+            clazz.setOrderIndex(i);
+            classRepository.save(clazz);
+        }
+
+        return classRepository.findAllByShiftIdAndIsActiveTrueOrderByOrderIndex(request.getShiftId());
     }
 }

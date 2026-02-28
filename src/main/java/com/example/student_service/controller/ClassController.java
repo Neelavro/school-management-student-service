@@ -1,5 +1,6 @@
 package com.example.student_service.controller;
 
+import com.example.student_service.dto.ReorderClassesRequest;
 import com.example.student_service.entity.Class;
 import com.example.student_service.service.ClassService;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +35,14 @@ public class ClassController {
     }
 
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Class> getClassById(@PathVariable Integer id) {
-//        Class clazz = classService.getClassById(id);
-//        if (clazz == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        return ResponseEntity.ok(clazz);
-//    }
+    @GetMapping("/only/{id}")
+    public ResponseEntity<Class> getClassById(@PathVariable Integer id) {
+        Class clazz = classService.getClassById(id);
+        if (clazz == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(clazz);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Class> updateClass(
@@ -59,5 +60,9 @@ public class ClassController {
     public ResponseEntity<Void> deleteClass(@PathVariable Integer id) {
         classService.deleteClass(id);
         return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/reorder")
+    public ResponseEntity<List<Class>> reorderClasses(@RequestBody ReorderClassesRequest request) {
+        return ResponseEntity.ok(classService.reorderClasses(request));
     }
 }

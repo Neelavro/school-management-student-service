@@ -8,4 +8,6 @@ import java.util.List;
 public interface ClassRepository extends JpaRepository<Class, Integer> {
 
     List<Class> findAllByShiftIdAndIsActiveTrue(Integer shiftId);
+    // In ClassRepository - replace the old method
+    List<Class> findAllByShiftIdAndIsActiveTrueOrderByOrderIndex(Integer shiftId);
 }

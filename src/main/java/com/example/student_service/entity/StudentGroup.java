@@ -1,8 +1,12 @@
 package com.example.student_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "student_group")
@@ -19,4 +23,9 @@ public class StudentGroup {
 
     @Column(name = "is_active")
     private Boolean isActive = true;
+
+    // ✅ "mappedBy" points to the field name in Class
+    @JsonIgnore  // ✅ breaks the infinite loop
+    @ManyToMany(mappedBy = "studentGroups", fetch = FetchType.EAGER)
+    private Set<Class> classes = new HashSet<>();
 }

@@ -4,11 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "class")
 @Getter
 @Setter
-public class Class {   // Avoid naming conflict with Java 'Class'
+public class Class {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,15 +19,21 @@ public class Class {   // Avoid naming conflict with Java 'Class'
 
     private String name;
 
-    // Existing shift FK
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "shift_id", nullable = true)
     private Shift shift;
 
-    // ✅ NEW nullable foreign key to student_group
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "student_group_id", nullable = true)
-    private StudentGroup studentGroup;
+    // ✅ Replace single studentGroup with a collection
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "class_student_group",                          // junction table name
+            joinColumns = @JoinColumn(name = "class_id"),          // FK to this entity
+            inverseJoinColumns = @JoinColumn(name = "student_group_id") // FK to the other
+    )
+    private Set<StudentGroup> studentGroups = new HashSet<>();
+
+    @Column(name = "order_index")
+    private Integer orderIndex;
 
     @Column(name = "is_active")
     private Boolean isActive = true;

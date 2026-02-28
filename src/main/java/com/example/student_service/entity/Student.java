@@ -112,6 +112,10 @@ public class Student {
     private String nationality;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "academic_year_id", nullable = true)
+    private AcademicYear academicYear;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "class_id")
     private Class studentClass;
 

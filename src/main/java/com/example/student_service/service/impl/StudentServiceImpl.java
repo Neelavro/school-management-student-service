@@ -16,6 +16,7 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private  final ClassRepository classRepository;
+    private  final AcademicYearRepository academicYearRepository;
     private  final GenderSectionRepository genderSectionRepository;
     private  final SectionRepository sectionRepository;
     private  final ShiftRepository shiftRepository;
@@ -65,6 +66,12 @@ public class StudentServiceImpl implements StudentService {
         student.setIsActive(true);
         assignOrUpdateStudentSystemId(student,student);
         // Shift
+
+        if (student.getAcademicYear() != null) {
+            Integer academicYearId = student.getAcademicYear().getId();
+            AcademicYear academicYearEntity = academicYearRepository.getReferenceById(academicYearId);
+            student.setAcademicYear(academicYearEntity);
+        }
         if (student.getShift() != null) {
             Integer shiftId = student.getShift().getId();
             Shift shiftEntity = shiftRepository.getReferenceById(shiftId);
@@ -167,6 +174,12 @@ public class StudentServiceImpl implements StudentService {
                     existing.setNationality(student.getNationality());
 
                     // 🔹 Reattach managed entities for relations
+
+                    // Academic Year
+                    if (student.getAcademicYear() != null) {
+                        Integer academicYearId = student.getAcademicYear().getId();
+                        existing.setAcademicYear(academicYearRepository.getReferenceById(academicYearId));
+                    }
 
                     // Shift
                     if (student.getShift() != null) {
