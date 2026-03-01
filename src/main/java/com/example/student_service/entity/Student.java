@@ -146,7 +146,6 @@ public class Student {
 
     @OneToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "image_id", nullable = true)
-    @org.hibernate.annotations.NotFound(action = org.hibernate.annotations.NotFoundAction.IGNORE)
     private StudentImage image;
 
     // Status
