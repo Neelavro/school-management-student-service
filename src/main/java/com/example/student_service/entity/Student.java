@@ -144,9 +144,9 @@ public class Student {
     @JoinColumn(name = "student_status_id")
     private StudentStatus studentStatus;
 
-    // ✅ Single image relation
-    @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @OneToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "image_id", nullable = true)
+    @org.hibernate.annotations.NotFound(action = org.hibernate.annotations.NotFoundAction.IGNORE)
     private StudentImage image;
 
     // Status
