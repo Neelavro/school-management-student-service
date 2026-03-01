@@ -1,5 +1,6 @@
 package com.example.student_service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,8 @@ public class StudentImage {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "student_id", nullable = true)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id")
     private Student student;
 }
