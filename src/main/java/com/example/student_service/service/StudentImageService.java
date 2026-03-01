@@ -10,6 +10,8 @@ public interface StudentImageService {
     // Upload or add image for a student
     StudentImage addImage(Long studentId, MultipartFile file);
 
+    StudentImage addImageByStudentSystemId(Long studentId, MultipartFile file);
+
     // Get the active image of a student
     Optional<StudentImage> getImageByStudent(Long studentId);
 

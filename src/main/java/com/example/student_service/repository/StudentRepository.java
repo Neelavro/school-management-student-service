@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
     boolean existsByStudentSystemId(String studentSystemId);
-    @Query("SELECT s.studentSystemId FROM Student s WHERE s.studentSystemId LIKE CONCAT(:year, '%') ORDER BY s.studentSystemId DESC LIMIT 1")
+    Optional<Student> findByStudentSystemId(String studentSystemId);    @Query("SELECT s.studentSystemId FROM Student s WHERE s.studentSystemId LIKE CONCAT(:year, '%') ORDER BY s.studentSystemId DESC LIMIT 1")
     String findMaxStudentSystemIdByYear(@Param("year") String year);
 }

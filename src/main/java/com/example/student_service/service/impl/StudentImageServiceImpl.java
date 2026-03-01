@@ -20,6 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StudentImageServiceImpl implements StudentImageService {
 
+
     private final StudentImageRepository studentImageRepository;
     private final StudentRepository studentRepository;
 
@@ -29,6 +30,28 @@ public class StudentImageServiceImpl implements StudentImageService {
     @Override
     public StudentImage addImage(Long studentId, MultipartFile file) {
         Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
+
+        String originalFilename = file.getOriginalFilename().replaceAll("\\s+", "_");
+        String fileName = UUID.randomUUID() + "_" + originalFilename;
+        Path filePath = Paths.get(IMAGE_FOLDER + fileName);
+
+        try {
+            Files.copy(file.getInputStream(), filePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save file", e);
+        }
+
+        StudentImage image = new StudentImage();
+        image.setStudent(student);
+        image.setImageUrl(BASE_URL + "/images/" + fileName);
+        image.setIsActive(true);
+
+        return studentImageRepository.save(image);
+    }
+    @Override
+    public StudentImage addImageByStudentSystemId(Long studentId, MultipartFile file) {
+        Student student = studentRepository.findByStudentSystemId(studentId.toString())
                 .orElseThrow(() -> new RuntimeException("Student not found with id: " + studentId));
 
         String originalFilename = file.getOriginalFilename().replaceAll("\\s+", "_");

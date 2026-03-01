@@ -27,6 +27,15 @@ public class StudentImageController {
         return ResponseEntity.status(HttpStatus.CREATED).body(image);
     }
 
+    @PostMapping("/seed/{studentId}")
+    public ResponseEntity<StudentImage> uploadImageSeed(
+            @PathVariable Long studentId,
+            @RequestParam("file") MultipartFile file
+    ) {
+        StudentImage image = studentImageService.addImageByStudentSystemId(studentId, file);
+        return ResponseEntity.status(HttpStatus.CREATED).body(image);
+    }
+
     // ✅ Get the active image of a student
     @GetMapping("/{studentId}")
     public ResponseEntity<StudentImage> getActiveImage(@PathVariable Long studentId) {
