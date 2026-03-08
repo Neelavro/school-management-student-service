@@ -11,5 +11,15 @@ public interface StudentService {
     List<StudentStatus> getStudentStatus();
     List<Student> getAllStudents();
     Student updateStudent(Long id, Student student);
+    Student migrateStudent(Long id, Student student);
+    // StudentService.java (interface)
+    List<Student> getFilteredStudents(
+            Long academicYearId,
+            Long shiftId,
+            Long classId,
+            Long genderSectionId,
+            Long sectionId,
+            Long groupId
+    );
     void deleteStudent(Long id); // soft delete
 }

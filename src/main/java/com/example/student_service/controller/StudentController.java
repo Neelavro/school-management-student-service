@@ -94,6 +94,33 @@ public class StudentController {
         }
     }
 
+    @PutMapping("/migrate/{id}")
+    public ResponseEntity<Map<String, Object>> migrateStudent(
+            @PathVariable Long id,
+            @RequestBody Student student
+    ) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Student updated = studentService.migrateStudent(id, student);
+            if (updated == null) {
+                response.put("success", false);
+                response.put("message", "Student not found");
+                return ResponseEntity.status(404).body(response);
+            }
+            response.put("success", true);
+            response.put("message", "Student updated successfully");
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException ex) {
+            response.put("success", false);
+            response.put("message", ex.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception ex) {
+            response.put("success", false);
+            response.put("message", "Could not update student: " + ex.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteStudent(@PathVariable Long id) {
@@ -105,6 +132,21 @@ public class StudentController {
             ApiResponse<Void> response = new ApiResponse<>("Could not delete student: " + ex.getMessage(), null, false);
             return ResponseEntity.internalServerError().body(response);
         }
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Student>> getFilteredStudents(
+            @RequestParam(required = false) Long academicYearId,
+            @RequestParam(required = false) Long shiftId,
+            @RequestParam(required = false) Long classId,
+            @RequestParam(required = false) Long genderSectionId,
+            @RequestParam(required = false) Long sectionId,
+            @RequestParam(required = false) Long groupId
+    ) {
+        List<Student> students = studentService.getFilteredStudents(
+                academicYearId, shiftId, classId, genderSectionId, sectionId, groupId
+        );
+        return ResponseEntity.ok(students);
     }
 
 }

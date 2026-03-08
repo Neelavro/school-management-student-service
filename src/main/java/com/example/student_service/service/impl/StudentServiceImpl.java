@@ -7,6 +7,12 @@ import com.example.student_service.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.ArrayList;
+import jakarta.persistence.criteria.Predicate;
+
+
 import java.util.List;
 import java.util.Random;
 
@@ -226,18 +232,146 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public Student migrateStudent(Long id, Student student) {
+        boolean x = studentRepository.existsById(id);
+        System.out.println("STUDENT FOUND : "+x);
+        return studentRepository.findById(id)
+                .map(existing ->  {
+                    // Simple fields
+                    existing.setClassRoll(student.getClassRoll());
+                    existing.setNameBangla(student.getNameBangla());
+                    existing.setNameEnglish(student.getNameEnglish());
+                    existing.setFatherNameBangla(student.getFatherNameBangla());
+                    existing.setFatherNameEnglish(student.getFatherNameEnglish());
+                    existing.setFatherOccupation(student.getFatherOccupation());
+                    existing.setFatherPhone(student.getFatherPhone());
+                    existing.setFatherMonthlySalary(student.getFatherMonthlySalary());
+                    existing.setMotherNameBangla(student.getMotherNameBangla());
+                    existing.setMotherNameEnglish(student.getMotherNameEnglish());
+                    existing.setMotherOccupation(student.getMotherOccupation());
+                    existing.setMotherPhone(student.getMotherPhone());
+                    existing.setMotherMonthlySalary(student.getMotherMonthlySalary());
+                    existing.setGuardianNameBangla(student.getGuardianNameBangla());
+                    existing.setGuardianNameEnglish(student.getGuardianNameEnglish());
+                    existing.setGuardianOccupation(student.getGuardianOccupation());
+                    existing.setGuardianPhone(student.getGuardianPhone());
+                    existing.setGuardianMonthlySalary(student.getGuardianMonthlySalary());
+                    existing.setCurrentHoldingNo(student.getCurrentHoldingNo());
+                    existing.setCurrentRoadOrVillage(student.getCurrentRoadOrVillage());
+                    existing.setCurrentDistrict(student.getCurrentDistrict());
+                    existing.setCurrentThana(student.getCurrentThana());
+                    existing.setPermanentHoldingNo(student.getPermanentHoldingNo());
+                    existing.setPermanentRoadOrVillage(student.getPermanentRoadOrVillage());
+                    existing.setPermanentDistrict(student.getPermanentDistrict());
+                    existing.setPermanentThana(student.getPermanentThana());
+                    existing.setDob(student.getDob());
+                    existing.setNationality(student.getNationality());
+
+                    // Relations — null clears them, non-null reattaches managed reference
+                    existing.setAcademicYear(
+                            student.getAcademicYear() != null
+                                    ? academicYearRepository.getReferenceById(student.getAcademicYear().getId())
+                                    : null
+                    );
+                    existing.setShift(
+                            student.getShift() != null
+                                    ? shiftRepository.getReferenceById(student.getShift().getId())
+                                    : null
+                    );
+                    existing.setStudentClass(
+                            student.getStudentClass() != null
+                                    ? classRepository.getReferenceById(student.getStudentClass().getId())
+                                    : null
+                    );
+                    existing.setGenderSection(
+                            student.getGenderSection() != null
+                                    ? genderSectionRepository.getReferenceById(student.getGenderSection().getId())
+                                    : null
+                    );
+                    existing.setGender(
+                            student.getGender() != null
+                                    ? genderRepository.getReferenceById(student.getGender().getId())
+                                    : null
+                    );
+                    existing.setSection(
+                            student.getSection() != null
+                                    ? sectionRepository.getReferenceById(Math.toIntExact(student.getSection().getId()))
+                                    : null
+                    );
+                    existing.setStudentGroup(
+                            student.getStudentGroup() != null
+                                    ? studentGroupRepository.getReferenceById(student.getStudentGroup().getId())
+                                    : null
+                    );
+                    existing.setStudentStatus(
+                            student.getStudentStatus() != null
+                                    ? studentStatusRepository.getReferenceById(student.getStudentStatus().getId())
+                                    : null
+                    );
+
+                   return studentRepository.save(existing);
+                }).orElse(null);
+    }
+
+
+    // StudentServiceImpl.java (implementation)
+    @Override
+    public List<Student> getFilteredStudents(
+            Long academicYearId,
+            Long shiftId,
+            Long classId,
+            Long genderSectionId,
+            Long sectionId,
+            Long groupId
+    ) {
+        Specification<Student> spec = StudentSpecification.filter(
+                academicYearId, shiftId, classId, genderSectionId, sectionId, groupId
+        );
+        return studentRepository.findAll(spec);
+    }
+
+    public class StudentSpecification {
+
+        public static Specification<Student> filter(
+                Long academicYearId,
+                Long shiftId,
+                Long classId,
+                Long genderSectionId,
+                Long sectionId,
+                Long groupId
+        ) {
+            return (root, query, cb) -> {
+                List<Predicate> predicates = new ArrayList<>();
+
+                if (academicYearId != null)
+                    predicates.add(cb.equal(root.get("academicYear").get("id"), academicYearId));
+
+                if (shiftId != null)
+                    predicates.add(cb.equal(root.get("shift").get("id"), shiftId));
+
+                if (classId != null)
+                    predicates.add(cb.equal(root.get("studentClass").get("id"), classId));
+
+                if (genderSectionId != null)
+                    predicates.add(cb.equal(root.get("genderSection").get("id"), genderSectionId));
+
+                if (sectionId != null)
+                    predicates.add(cb.equal(root.get("section").get("id"), sectionId));
+
+                if (groupId != null)
+                    predicates.add(cb.equal(root.get("studentGroup").get("id"), groupId));
+
+                return cb.and(predicates.toArray(new Predicate[0]));
+            };
+        }
+    }
+
+    @Override
     public List<StudentStatus> getStudentStatus(){
         return studentStatusRepository.findAll();
     }
 
 
-//    @Override
-//    public void deleteStudent(Long id) {
-//        studentRepository.findById(id).ifPresent(student -> {
-//            student.setIsActive(false); // soft delete
-//            studentRepository.save(student);
-//        });
-//    }
     @Override
     public void deleteStudent(Long id) {
        studentRepository.deleteById(id);
