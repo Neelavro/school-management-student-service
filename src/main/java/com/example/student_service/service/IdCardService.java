@@ -7,8 +7,6 @@ import com.microsoft.playwright.options.WaitUntilState;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
-
-import java.io.InputStream;
 import java.util.Base64;
 import java.util.List;
 import java.nio.file.Files;
@@ -17,20 +15,24 @@ import java.nio.file.Paths;
 @Service
 public class IdCardService {
 
-    private static final int COLS     = 6;
-    private static final int CARD_W   = 190;
-    private static final int CARD_H   = 300;
-    private static final int GAP      = 6;
-    private static final int PAGE_PAD = 10;
-    private static final int PAGE_W   = COLS * CARD_W + (COLS - 1) * GAP + PAGE_PAD * 2;
+    private static final int COLS           = 6;
+    private static final int ROWS           = 3;
+    private static final int CARDS_PER_PAGE = COLS * ROWS;
+    private static final int CARD_W         = 190;
+    private static final int CARD_H         = 300;
+    private static final int GAP            = 6;
+    private static final int PAGE_PAD       = 10;
+    private static final int PAGE_W         = COLS * CARD_W + (COLS - 1) * GAP + PAGE_PAD * 2;
+    private static final int PAGE_H         = ROWS * CARD_H + (ROWS - 1) * GAP + PAGE_PAD * 2;
 
     private String signatureBase64;
 
     @PostConstruct
     public void init() {
         try {
-            InputStream is = getClass().getResourceAsStream("/static/signature.jpeg");
-            byte[] imageBytes = is.readAllBytes();
+            byte[] imageBytes = Files.readAllBytes(
+                    Paths.get("src/main/resources/static/signature.jpeg")
+            );
             signatureBase64 = "data:image/jpeg;base64,"
                     + Base64.getEncoder().encodeToString(imageBytes);
         } catch (Exception e) {
@@ -58,7 +60,7 @@ public class IdCardService {
                             .setLeft("0")
                             .setRight("0"))
                     .setWidth(PAGE_W + "px")
-                    .setHeight("1122px")   // A4 landscape at 96 dpi
+                    .setHeight(PAGE_H + "px")
             );
 
             browser.close();
@@ -69,7 +71,14 @@ public class IdCardService {
     private String buildHtml(List<Student> students) {
         StringBuilder cards = new StringBuilder();
 
-        for (Student s : students) {
+        for (int i = 0; i < students.size(); i++) {
+            Student s = students.get(i);
+
+            // Insert page break before every new page (except the first)
+            if (i > 0 && i % CARDS_PER_PAGE == 0) {
+                cards.append("<div class=\"page-break\"></div>");
+            }
+
             String photoUrl = (s.getImage() != null && s.getImage().getIsActive())
                     ? s.getImage().getImageUrl()
                     : "https://via.placeholder.com/70x80";
@@ -92,14 +101,23 @@ public class IdCardService {
 
                     .append("<table class=\"info\">")
                     .append("<tr><td class=\"label\">Class</td><td>: ").append(s.getStudentClass() != null ? s.getStudentClass().getName() : "N/A").append("</td></tr>")
-                    .append("<tr><td class=\"label\">Shift</td><td>: ").append(s.getShift() != null ? s.getShift().getName() : "N/A").append("</td></tr>")
-                    .append("<tr><td class=\"label\">Section</td><td>: ").append(s.getSection() != null ? s.getSection().getSectionName() : "N/A").append("</td></tr>")
-                    .append("<tr><td class=\"label\">Group</td><td>: ").append(s.getStudentGroup() != null ? s.getStudentGroup().getGroupName() : "N/A").append("</td></tr>")
-                    .append("<tr><td class=\"label\">Roll</td><td>: ").append(s.getClassRoll() != null ? s.getClassRoll() : "N/A").append("</td></tr>")
+                    .append("<tr><td class=\"label\">Shift</td><td>: ").append(s.getShift() != null ? s.getShift().getName() : "N/A").append("</td></tr>");
+
+            // Only show Section if not null
+            if (s.getSection() != null) {
+                cards.append("<tr><td class=\"label\">Section</td><td>: ").append(s.getSection().getSectionName()).append("</td></tr>");
+            }
+
+            // Only show Group if not null
+            if (s.getStudentGroup() != null) {
+                cards.append("<tr><td class=\"label\">Group</td><td>: ").append(s.getStudentGroup().getGroupName()).append("</td></tr>");
+            }
+
+            cards.append("<tr><td class=\"label\">Roll</td><td>: ").append(s.getClassRoll() != null ? s.getClassRoll() : "N/A").append("</td></tr>")
                     .append("<tr><td class=\"label\">Year</td><td>: ").append(s.getAcademicYear() != null ? s.getAcademicYear().getYearName() : "N/A").append("</td></tr>")
                     .append("<tr><td class=\"label\">Mobile</td><td>: ").append(s.getMotherPhone() != null ? s.getMotherPhone() : "N/A").append("</td></tr>")
                     .append("</table>")
-                    // ✅ Signature image placed above the dashed line and PRINCIPAL label
+
                     .append("<div class=\"signature\">")
                     .append(signatureBase64.isEmpty() ? "" :
                             "<img src=\"" + signatureBase64 + "\" class=\"signature-img\">")
@@ -231,6 +249,13 @@ public class IdCardService {
                 + "  width: 100%;"
                 + "  height: 20px;"
                 + "  background: linear-gradient(90deg, #2aa4d4, #1d5bbf);"
+                + "}"
+
+                // Page break
+                + ".page-break {"
+                + "  width: 100%;"
+                + "  page-break-before: always;"
+                + "  break-before: page;"
                 + "}";
     }
 }
