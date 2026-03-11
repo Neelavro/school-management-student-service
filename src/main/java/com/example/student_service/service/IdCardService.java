@@ -99,7 +99,6 @@ public class IdCardService {
                     .append("<tr><td class=\"label\">Year</td><td>: ").append(s.getAcademicYear() != null ? s.getAcademicYear().getYearName() : "N/A").append("</td></tr>")
                     .append("<tr><td class=\"label\">Mobile</td><td>: ").append(s.getMotherPhone() != null ? s.getMotherPhone() : "N/A").append("</td></tr>")
                     .append("</table>")
-
                     // ✅ Signature image placed above the dashed line and PRINCIPAL label
                     .append("<div class=\"signature\">")
                     .append(signatureBase64.isEmpty() ? "" :
