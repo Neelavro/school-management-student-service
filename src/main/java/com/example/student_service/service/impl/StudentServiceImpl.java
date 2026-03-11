@@ -178,6 +178,7 @@ public class StudentServiceImpl implements StudentService {
                     existing.setPermanentThana(student.getPermanentThana());
                     existing.setDob(student.getDob());
                     existing.setNationality(student.getNationality());
+                    existing.setIsActive(student.getIsActive());
 
                     // 🔹 Reattach managed entities for relations
 
@@ -374,6 +375,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudent(Long id) {
-       studentRepository.deleteById(id);
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Class not found"));
+        student.setIsActive(false);
+        studentRepository.save(student);
     }
 }
