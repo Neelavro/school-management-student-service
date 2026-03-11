@@ -7,6 +7,8 @@ import com.microsoft.playwright.options.WaitUntilState;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
+
+import java.io.InputStream;
 import java.util.Base64;
 import java.util.List;
 import java.nio.file.Files;
@@ -27,9 +29,8 @@ public class IdCardService {
     @PostConstruct
     public void init() {
         try {
-            byte[] imageBytes = Files.readAllBytes(
-                    Paths.get("src/main/resources/static/signature.jpeg")
-            );
+            InputStream is = getClass().getResourceAsStream("/static/signature.jpeg");
+            byte[] imageBytes = is.readAllBytes();
             signatureBase64 = "data:image/jpeg;base64,"
                     + Base64.getEncoder().encodeToString(imageBytes);
         } catch (Exception e) {
