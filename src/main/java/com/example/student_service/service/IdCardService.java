@@ -91,13 +91,13 @@ public class IdCardService {
                     .append("<div class=\"name\">").append(s.getNameEnglish()).append("</div>")
 
                     .append("<table class=\"info\">")
-                    .append("<tr><td class=\"label\">Class</td><td>: ").append(s.getStudentClass().getName()).append("</td></tr>")
-                    .append("<tr><td class=\"label\">Shift</td><td>: ").append(s.getShift().getName()).append("</td></tr>")
-                    .append("<tr><td class=\"label\">Section</td><td>: ").append(s.getSection().getSectionName()).append("</td></tr>")
-                    .append("<tr><td class=\"label\">Group</td><td>: ").append(s.getStudentGroup().getGroupName()).append("</td></tr>")
-                    .append("<tr><td class=\"label\">Roll</td><td>: ").append(s.getClassRoll()).append("</td></tr>")
-                    .append("<tr><td class=\"label\">Year</td><td>: ").append(s.getAcademicYear().getYearName()).append("</td></tr>")
-                    .append("<tr><td class=\"label\">Mobile</td><td>: ").append(s.getMotherPhone()).append("</td></tr>")
+                    .append("<tr><td class=\"label\">Class</td><td>: ").append(s.getStudentClass() != null ? s.getStudentClass().getName() : "N/A").append("</td></tr>")
+                    .append("<tr><td class=\"label\">Shift</td><td>: ").append(s.getShift() != null ? s.getShift().getName() : "N/A").append("</td></tr>")
+                    .append("<tr><td class=\"label\">Section</td><td>: ").append(s.getSection() != null ? s.getSection().getSectionName() : "N/A").append("</td></tr>")
+                    .append("<tr><td class=\"label\">Group</td><td>: ").append(s.getStudentGroup() != null ? s.getStudentGroup().getGroupName() : "N/A").append("</td></tr>")
+                    .append("<tr><td class=\"label\">Roll</td><td>: ").append(s.getClassRoll() != null ? s.getClassRoll() : "N/A").append("</td></tr>")
+                    .append("<tr><td class=\"label\">Year</td><td>: ").append(s.getAcademicYear() != null ? s.getAcademicYear().getYearName() : "N/A").append("</td></tr>")
+                    .append("<tr><td class=\"label\">Mobile</td><td>: ").append(s.getMotherPhone() != null ? s.getMotherPhone() : "N/A").append("</td></tr>")
                     .append("</table>")
 
                     // ✅ Signature image placed above the dashed line and PRINCIPAL label
