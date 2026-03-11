@@ -103,6 +103,11 @@ public class IdCardService {
                     .append("<tr><td class=\"label\">Class</td><td>: ").append(s.getStudentClass() != null ? s.getStudentClass().getName() : "N/A").append("</td></tr>")
                     .append("<tr><td class=\"label\">Shift</td><td>: ").append(s.getShift() != null ? s.getShift().getName() : "N/A").append("</td></tr>");
 
+            // Only show Gender Section if not null
+            if (s.getGenderSection() != null) {
+                cards.append("<tr><td class=\"label\">Section Type</td><td>: ").append(s.getGenderSection().getGenderName()).append("</td></tr>");
+            }
+
             // Only show Section if not null
             if (s.getSection() != null) {
                 cards.append("<tr><td class=\"label\">Section</td><td>: ").append(s.getSection().getSectionName()).append("</td></tr>");
