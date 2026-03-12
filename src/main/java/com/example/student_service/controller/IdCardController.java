@@ -34,12 +34,10 @@ public class IdCardController {
             HttpServletResponse response
     ) throws Exception {
 
-        // Get filtered students from the service
         List<Student> students = studentService.getFilteredStudents(
                 academicYearId, shiftId, classId, genderSectionId, sectionId, groupId
         );
 
-        // Apply roll number filtering
         if (fromRoll != null || toRoll != null) {
             students = students.stream()
                     .filter(s -> {
@@ -51,12 +49,21 @@ public class IdCardController {
                     .collect(Collectors.toList());
         }
 
-        // Generate PDF
         byte[] pdfBytes = idCardService.generatePdf(students);
 
-        // Set response headers
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=student_id_cards.pdf");
+        response.getOutputStream().write(pdfBytes);
+        response.getOutputStream().flush();
+    }
+
+    @GetMapping("/download-back")
+    public void downloadIdCardBack(HttpServletResponse response) throws Exception {
+
+        byte[] pdfBytes = idCardService.generateBackPdf();
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=student_id_card_back.pdf");
         response.getOutputStream().write(pdfBytes);
         response.getOutputStream().flush();
     }
