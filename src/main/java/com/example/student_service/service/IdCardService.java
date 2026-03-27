@@ -127,8 +127,8 @@ public class IdCardService {
             cards.append("<div class=\"card\">")
 
                     .append("<div class=\"school\">")
-                    .append("<h2>LUTFUR RAHMAN DAKHIL\n(CADET) MADRASAH</h2>")
-                    .append("<p>LUTFUR RAHMAN ROAD, NATULLABAD,</p>")
+                    .append("<h2>LUTFUR RAHMAN ALIM MADRASAH</h2>")
+                    .append("<p>LUTFUR RAHMAN SARAK, NATULLABAD, BARISHAL</p>")
                     .append("</div>")
 
                     .append("<div class=\"id-bar\">ID CARD</div>")
@@ -145,11 +145,11 @@ public class IdCardService {
                     .append("<tr><td class=\"label\">Shift</td><td>: ").append(s.getShift() != null ? s.getShift().getName() : "N/A").append("</td></tr>");
 
             if (s.getGenderSection() != null) {
-                cards.append("<tr><td class=\"label\">Section Type</td><td>: ").append(s.getGenderSection().getGenderName()).append("</td></tr>");
+                cards.append("<tr><td class=\"label\">Section</td><td>: ").append(s.getGenderSection().getGenderName()).append("</td></tr>");
             }
-            if (s.getSection() != null) {
-                cards.append("<tr><td class=\"label\">Section</td><td>: ").append(s.getSection().getSectionName()).append("</td></tr>");
-            }
+//            if (s.getSection() != null) {
+//                cards.append("<tr><td class=\"label\">Section</td><td>: ").append(s.getSection().getSectionName()).append("</td></tr>");
+//            }
             if (s.getStudentGroup() != null) {
                 cards.append("<tr><td class=\"label\">Group</td><td>: ").append(s.getStudentGroup().getGroupName()).append("</td></tr>");
             }
@@ -179,22 +179,32 @@ public class IdCardService {
 
     private String buildBackHtml() {
         String logoTag = logoBase64.isEmpty()
-                ? "<div class=\"logo-placeholder\">LRMM</div>"
-                : "<img src=\"" + logoBase64 + "\" class=\"logo-img\" alt=\"LRMM Logo\">";
+                ? "<div class=\"logo-placeholder\">LRMA</div>"
+                : "<img src=\"" + logoBase64 + "\" class=\"logo-img\" alt=\"LRMA Logo\">";
 
-        // One card sits in the top-left cell of the same grid.
-        // The grid is flex-wrap so the single card just occupies the first slot.
         String card = "<div class=\"card-back\">"
-                + "<div class=\"top-section\">"
-                + "<div class=\"found-text\">If Found, Please<br>Return to the</div>"
-                + "<div class=\"logo-container\">" + logoTag + "</div>"
+
+                + "<div class=\"back-top-text\">LUTFUR RAHMAN ALIM MADRASAH</div>"
+
+                + "<div class=\"back-curve\"></div>"
+
+                + "<div class=\"back-content\">"
+                + "<div class=\"back-section-title\">Terms &amp; Conditions</div>"
+                + "<div class=\"back-terms\">"
+                + "&#8226; This card is not transferable.<br>"
+                + "&#8226; Always carry your card with you.<br>"
+                + "&#8226; In case of loss, inform issuing authority.<br>"
+                + "&#8226; If found, please return to address below."
                 + "</div>"
-                + "<div class=\"school-banner\"><h2>LUTFUR RAHMAN DAKHIL<br>(CADET) MADRASAH</h2></div>"
-                + "<div class=\"bottom-section\">"
-                + "<div class=\"info-line\">LUTFUR RAHMAN ROAD, NATULLABAD,</div>"
-                + "<div class=\"info-line\">01913520581</div>"
-                + "<div class=\"info-line\">lutfurrahmanmodelmadrasah2003@gmail.com</div>"
+                + "<div class=\"back-logo-center\">" + logoTag + "</div>"
+                + "<div class=\"back-footer\">"
+                + "<div>&#128205; Lutfur Rahman Sarak, Natullabad, Barishal</div>"
+                + "<div>&#128222; 01712-951422</div>"
+                + "<div>&#9993; lutfurrahmanmodelmadrasah2003@gmail.com</div>"
                 + "</div>"
+                + "</div>"
+
+                + "<div class=\"back-bottom-bar\"></div>"
                 + "</div>";
 
         return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>"
@@ -292,53 +302,88 @@ public class IdCardService {
         return ".card-back {"
                 + "  width: " + CARD_W + "px;"
                 + "  height: " + CARD_H + "px;"
-                + "  background: #ffffff;"
-                + "  border: 2px solid #3a9fd8;"
+                + "  background: #111;"
+                + "  border: none;"
+                + "  position: relative;"
+                + "  overflow: hidden;"
                 + "  display: flex;"
                 + "  flex-direction: column;"
-                + "  overflow: hidden;"
                 + "}"
 
-                + ".top-section {"
+                + ".back-top-text {"
+                + "  color: orange;"
+                + "  padding: 5px 8px;"
+                + "  font-weight: bold;"
+                + "  font-size: 8px;"
+                + "  position: relative;"
+                + "  z-index: 2;"
+                + "  line-height: 1.3;"
+                + "  flex-shrink: 0;"
+                + "}"
+
+                + ".back-curve {"
+                + "  position: absolute;"
+                + "  top: 16px;"
+                + "  left: 0;"
+                + "  width: 100%;"
+                + "  height: calc(100% - 16px);"
+                + "  background: white;"
+                + "  clip-path: ellipse(140% 90% at 0% 100%);"
+                + "  z-index: 1;"
+                + "}"
+
+                + ".back-content {"
+                + "  position: relative;"
+                + "  z-index: 2;"
+                + "  padding: 6px 10px 0;"
+                + "  margin-top: 50px;"          // was 35px
                 + "  flex: 1;"
-                + "  display: flex; flex-direction: column;"
-                + "  align-items: center; justify-content: center;"
-                + "  padding: 10px 8px 6px; gap: 8px;"
+                + "  display: flex;"
+                + "  flex-direction: column;"
                 + "}"
 
-                + ".found-text {"
-                + "  text-align: center; font-size: 10px;"
-                + "  font-weight: bold; color: #000; line-height: 1.4;"
+                + ".back-section-title {"
+                + "  font-weight: bold;"
+                + "  font-size: 11px;"           // was 9px
+                + "  margin-bottom: 5px;"
+                + "  color: #111;"
                 + "}"
 
-                + ".logo-container {"
-                + "  width: 72px; height: 72px;"
-                + "  display: flex; align-items: center; justify-content: center;"
+                + ".back-terms {"
+                + "  font-size: 8.5px;"          // was 7px
+                + "  line-height: 1.6;"
+                + "  color: #222;"
                 + "}"
 
-                + ".logo-img { width: 100%; height: 100%; object-fit: contain; }"
-
-                + ".logo-placeholder { font-size: 10px; font-weight: bold; color: #1d3e8a; }"
-
-                + ".school-banner {"
-                + "  background: #2aa4d4; width: 100%;"
-                + "  padding: 5px 6px; text-align: center;"
+                + ".back-logo-center {"
+                + "  text-align: center;"
+                + "  margin: 8px 0;"
                 + "}"
 
-                + ".school-banner h2 {"
-                + "  color: #fff; font-size: 8.5px; font-weight: 900;"
-                + "  line-height: 1.4; text-transform: uppercase; letter-spacing: 0.2px;"
+                + ".logo-img {"
+                + "  width: 50px;"
+                + "  height: 50px;"
+                + "  object-fit: contain;"
                 + "}"
 
-                + ".bottom-section {"
-                + "  padding: 6px 8px 8px;"
-                + "  border-top: 1px solid #3a9fd8;"
-                + "  display: flex; flex-direction: column; gap: 3px;"
+                + ".logo-placeholder {"
+                + "  font-size: 10px; font-weight: bold; color: #1d3e8a;"
                 + "}"
 
-                + ".info-line {"
-                + "  text-align: center; font-size: 7px;"
-                + "  font-weight: bold; color: #000; line-height: 1.4;"
+                + ".back-footer {"
+                + "  font-size: 8px;"            // was 6.5px
+                + "  color: #111;"
+                + "  line-height: 1.5;"
+                + "}"
+
+                + ".back-footer div { margin-bottom: 3px; }"
+
+                + ".back-bottom-bar {"
+                + "  height: 10px;"
+                + "  background: orange;"
+                + "  position: relative;"
+                + "  z-index: 2;"
+                + "  flex-shrink: 0;"
                 + "}";
     }
 }
