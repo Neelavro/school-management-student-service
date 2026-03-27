@@ -47,7 +47,13 @@ public class StudentImageServiceImpl implements StudentImageService {
         image.setImageUrl(BASE_URL + "/images/" + fileName);
         image.setIsActive(true);
 
-        return studentImageRepository.save(image);
+        StudentImage saved = studentImageRepository.save(image);
+
+        // ✅ Temp fix: write image_id back on student
+        student.setImage(saved);
+        studentRepository.save(student);
+
+        return saved;
     }
     @Override
     public StudentImage addImageByStudentSystemId(Long studentId, MultipartFile file) {
@@ -69,7 +75,14 @@ public class StudentImageServiceImpl implements StudentImageService {
         image.setImageUrl(BASE_URL + "/images/" + fileName);
         image.setIsActive(true);
 
-        return studentImageRepository.save(image);
+        StudentImage saved = studentImageRepository.save(image);
+
+        // ✅ Temp fix: write image_id back on student
+        student.setImage(saved);
+        studentRepository.save(student);
+
+        return saved;
+
     }
 
     @Override
