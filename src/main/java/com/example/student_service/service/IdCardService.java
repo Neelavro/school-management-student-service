@@ -180,31 +180,30 @@ public class IdCardService {
     private String buildBackHtml() {
         String logoTag = logoBase64.isEmpty()
                 ? "<div class=\"logo-placeholder\">LRMA</div>"
-                : "<img src=\"" + logoBase64 + "\" class=\"logo-img\" alt=\"LRMA Logo\">";
+                : "<img src=\"" + logoBase64 + "\" class=\"logo-img\" alt=\"Logo\">";
 
         String card = "<div class=\"card-back\">"
-
-                + "<div class=\"back-top-text\">LUTFUR RAHMAN ALIM MADRASAH</div>"
-
-                + "<div class=\"back-curve\"></div>"
-
-                + "<div class=\"back-content\">"
-                + "<div class=\"back-section-title\">Terms &amp; Conditions</div>"
-                + "<div class=\"back-terms\">"
-                + "&#8226; This card is not transferable.<br>"
-                + "&#8226; Always carry your card with you.<br>"
-                + "&#8226; In case of loss, inform issuing authority.<br>"
-                + "&#8226; If found, please return to address below."
+                + "<div class=\"back-top-text\">"
+                + "This card is not transferable.<br>"
+                + "Always carry your card with you.<br>"
+                + "In case of loss, inform issuing authority as if found, please return to below address."
                 + "</div>"
+
                 + "<div class=\"back-logo-center\">" + logoTag + "</div>"
-                + "<div class=\"back-footer\">"
-                + "<div>&#128205; Lutfur Rahman Sarak, Natullabad, Barishal</div>"
-                + "<div>&#128222; 01712-951422</div>"
-                + "<div>&#9993; lutfurrahmanmodelmadrasah2003@gmail.com</div>"
-                + "</div>"
+
+                + "<div class=\"back-school-name\">"
+                + "LUTFUR RAHMAN ALIM MADRASAH"
                 + "</div>"
 
-                + "<div class=\"back-bottom-bar\"></div>"
+                + "<div class=\"back-info\">"
+                + "<div><span class=\"back-label\">EIIN:</span> 137732</div>"
+                + "<div>LUTFUR RAHMAN ROAD</div>"
+                + "<div>NATULLABAD, BARISHAL</div>"
+                + "<div><span class=\"back-label\">Mobile:</span> 01712-951422</div>"
+                + "<div><span class=\"back-label\">Email:</span><br>lutfurrahmanmodelmadrasah2003@gmail.com</div>"
+                + "</div>"
+
+                + "<div class=\"back-footer\">Validity Date : 31-12-2025</div>"
                 + "</div>";
 
         return "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>"
@@ -302,62 +301,28 @@ public class IdCardService {
         return ".card-back {"
                 + "  width: " + CARD_W + "px;"
                 + "  height: " + CARD_H + "px;"
-                + "  background: #111;"
-                + "  border: none;"
+                + "  background: #ffffff;"
+                + "  border: 2px dashed #999;"
+                + "  padding: 14px 16px;"
                 + "  position: relative;"
                 + "  overflow: hidden;"
                 + "  display: flex;"
                 + "  flex-direction: column;"
+                + "  align-items: center;"
+                + "  text-align: center;"
+                + "  box-sizing: border-box;"
                 + "}"
 
                 + ".back-top-text {"
-                + "  color: orange;"
-                + "  padding: 5px 8px;"
+                + "  font-size: 7px;"
                 + "  font-weight: bold;"
-                + "  font-size: 8px;"
-                + "  position: relative;"
-                + "  z-index: 2;"
-                + "  line-height: 1.3;"
-                + "  flex-shrink: 0;"
-                + "}"
-
-                + ".back-curve {"
-                + "  position: absolute;"
-                + "  top: 16px;"
-                + "  left: 0;"
-                + "  width: 100%;"
-                + "  height: calc(100% - 16px);"
-                + "  background: white;"
-                + "  clip-path: ellipse(140% 90% at 0% 100%);"
-                + "  z-index: 1;"
-                + "}"
-
-                + ".back-content {"
-                + "  position: relative;"
-                + "  z-index: 2;"
-                + "  padding: 6px 10px 0;"
-                + "  margin-top: 50px;"          // was 35px
-                + "  flex: 1;"
-                + "  display: flex;"
-                + "  flex-direction: column;"
-                + "}"
-
-                + ".back-section-title {"
-                + "  font-weight: bold;"
-                + "  font-size: 11px;"           // was 9px
-                + "  margin-bottom: 5px;"
+                + "  line-height: 1.5;"
                 + "  color: #111;"
-                + "}"
-
-                + ".back-terms {"
-                + "  font-size: 8.5px;"          // was 7px
-                + "  line-height: 1.6;"
-                + "  color: #222;"
+                + "  margin-bottom: 10px;"
                 + "}"
 
                 + ".back-logo-center {"
-                + "  text-align: center;"
-                + "  margin: 8px 0;"
+                + "  margin: 6px 0;"
                 + "}"
 
                 + ".logo-img {"
@@ -370,20 +335,30 @@ public class IdCardService {
                 + "  font-size: 10px; font-weight: bold; color: #1d3e8a;"
                 + "}"
 
-                + ".back-footer {"
-                + "  font-size: 8px;"            // was 6.5px
+                + ".back-school-name {"
+                + "  font-size: 9px;"
+                + "  font-weight: bold;"
                 + "  color: #111;"
-                + "  line-height: 1.5;"
+                + "  line-height: 1.4;"
+                + "  margin: 6px 0;"
                 + "}"
 
-                + ".back-footer div { margin-bottom: 3px; }"
+                + ".back-info {"
+                + "  font-size: 7.5px;"
+                + "  line-height: 1.6;"
+                + "  color: #222;"
+                + "  margin-top: 4px;"
+                + "}"
 
-                + ".back-bottom-bar {"
-                + "  height: 10px;"
-                + "  background: orange;"
-                + "  position: relative;"
-                + "  z-index: 2;"
-                + "  flex-shrink: 0;"
+                + ".back-label {"
+                + "  font-weight: bold;"
+                + "}"
+
+                + ".back-footer {"
+                + "  margin-top: 10px;"
+                + "  font-size: 8px;"
+                + "  font-weight: bold;"
+                + "  color: #111;"
                 + "}";
     }
 }
