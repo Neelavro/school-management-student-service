@@ -12,6 +12,14 @@ import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import javax.imageio.*;
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
+
 @Service
 public class IdCardService {
 
@@ -27,6 +35,53 @@ public class IdCardService {
 
     private String signatureBase64;
     private String logoBase64;
+
+    private String fetchAndCompressToBase64(String imageUrl) {
+        int MAX_BYTES = 250 * 1024; // 250 KB
+
+        try {
+            BufferedImage original = ImageIO.read(new URL(imageUrl));
+            if (original == null) return "";
+
+            // Step 1: Resize to card dimensions (2x for print sharpness)
+            int targetW = 140, targetH = 160;
+            BufferedImage resized = new BufferedImage(targetW, targetH, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = resized.createGraphics();
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.drawImage(original, 0, 0, targetW, targetH, null);
+            g.dispose();
+
+            // Step 2: Try decreasing JPEG quality until under 250 KB
+            float quality = 0.85f;
+            byte[] result = null;
+
+            while (quality >= 0.30f) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageOutputStream ios = ImageIO.createImageOutputStream(baos);
+
+                ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();
+                ImageWriteParam param = writer.getDefaultWriteParam();
+                param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+                param.setCompressionQuality(quality);
+                writer.setOutput(ios);
+                writer.write(null, new IIOImage(resized, null, null), param);
+                writer.dispose();
+                ios.close();
+
+                result = baos.toByteArray();
+                if (result.length <= MAX_BYTES) break;
+
+                quality -= 0.10f;
+            }
+
+            if (result == null || result.length == 0) return "";
+            return "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(result);
+
+        } catch (Exception e) {
+            System.err.println("Warning: Could not process student image: " + e.getMessage());
+            return "";
+        }
+    }
 
     @PostConstruct
     public void init() {
@@ -121,7 +176,7 @@ public class IdCardService {
             }
 
             String photoUrl = (s.getImage() != null && s.getImage().getIsActive())
-                    ? s.getImage().getImageUrl()
+                    ? fetchAndCompressToBase64(s.getImage().getImageUrl())
                     : "https://via.placeholder.com/70x80";
 
             cards.append("<div class=\"card\">")
@@ -135,7 +190,9 @@ public class IdCardService {
                     .append("<div class=\"student-id\">").append(s.getStudentSystemId()).append("</div>")
 
                     .append("<div class=\"photo\">")
-                    .append("<img src=\"").append(photoUrl).append("\" style=\"width:100%;height:100%;object-fit:cover;\">")
+                    .append(photoUrl.isEmpty()
+                            ? "<img src=\"https://via.placeholder.com/70x80\" style=\"width:100%;height:100%;object-fit:cover;\">"
+                            : "<img src=\"" + photoUrl + "\" style=\"width:100%;height:100%;object-fit:cover;\">")
                     .append("</div>")
 
                     .append("<div class=\"name\">").append(s.getNameEnglish()).append("</div>")
