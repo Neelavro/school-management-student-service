@@ -14,7 +14,6 @@ import java.nio.file.Paths;
 
 import javax.imageio.*;
 import javax.imageio.stream.ImageOutputStream;
-import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -40,8 +39,45 @@ public class IdCardService {
         int MAX_BYTES = 250 * 1024; // 250 KB
 
         try {
-            BufferedImage original = ImageIO.read(new URL(imageUrl));
+            // Read raw bytes once (needed for both EXIF and ImageIO)
+            byte[] rawBytes = new URL(imageUrl).openStream().readAllBytes();
+
+            BufferedImage original = ImageIO.read(new java.io.ByteArrayInputStream(rawBytes));
             if (original == null) return "";
+
+            // Fix EXIF rotation — ImageIO ignores it, Playwright ignores it
+            try {
+                com.drew.metadata.Metadata metadata = com.drew.imaging.ImageMetadataReader
+                        .readMetadata(new java.io.ByteArrayInputStream(rawBytes));
+                com.drew.metadata.exif.ExifIFD0Directory exif = metadata
+                        .getFirstDirectoryOfType(com.drew.metadata.exif.ExifIFD0Directory.class);
+
+                if (exif != null && exif.containsTag(com.drew.metadata.exif.ExifIFD0Directory.TAG_ORIENTATION)) {
+                    int orientation = exif.getInt(com.drew.metadata.exif.ExifIFD0Directory.TAG_ORIENTATION);
+                    int degrees = switch (orientation) {
+                        case 3 -> 180;
+                        case 6 -> 90;
+                        case 8 -> 270;
+                        default -> 0;
+                    };
+
+                    if (degrees != 0) {
+                        boolean swap = (degrees == 90 || degrees == 270);
+                        int newW = swap ? original.getHeight() : original.getWidth();
+                        int newH = swap ? original.getWidth() : original.getHeight();
+                        BufferedImage rotated = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_RGB);
+                        Graphics2D gr = rotated.createGraphics();
+                        gr.translate(newW / 2.0, newH / 2.0);
+                        gr.rotate(Math.toRadians(degrees));
+                        gr.translate(-original.getWidth() / 2.0, -original.getHeight() / 2.0);
+                        gr.drawImage(original, 0, 0, null);
+                        gr.dispose();
+                        original = rotated;
+                    }
+                }
+            } catch (Exception exifEx) {
+                System.err.println("Warning: Could not read EXIF, skipping rotation: " + exifEx.getMessage());
+            }
 
             // Scale down to 140px wide, preserve aspect ratio
             int targetW = 140;
@@ -85,7 +121,6 @@ public class IdCardService {
             return "";
         }
     }
-
 
     @PostConstruct
     public void init() {
