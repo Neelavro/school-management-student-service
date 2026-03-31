@@ -328,6 +328,7 @@ public class StudentServiceImpl implements StudentService {
         Specification<Student> spec = StudentSpecification.filter(
                 academicYearId, shiftId, classId, genderSectionId, sectionId, groupId
         );
+
         return studentRepository.findAll(spec);
     }
 
@@ -343,6 +344,9 @@ public class StudentServiceImpl implements StudentService {
         ) {
             return (root, query, cb) -> {
                 List<Predicate> predicates = new ArrayList<>();
+
+                // Always filter active students
+                predicates.add(cb.isTrue(root.get("isActive")));
 
                 if (academicYearId != null)
                     predicates.add(cb.equal(root.get("academicYear").get("id"), academicYearId));
