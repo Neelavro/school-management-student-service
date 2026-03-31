@@ -43,28 +43,16 @@ public class IdCardService {
             BufferedImage original = ImageIO.read(new URL(imageUrl));
             if (original == null) return "";
 
-            int targetW = 140, targetH = 160;
+            // Scale down to 140px wide, preserve aspect ratio
+            int targetW = 140;
+            int targetH = (int) ((double) original.getHeight() / original.getWidth() * targetW);
 
-            // Scale to fill both dimensions (like object-fit: cover)
-            double scaleX = (double) targetW / original.getWidth();
-            double scaleY = (double) targetH / original.getHeight();
-            double scale  = Math.max(scaleX, scaleY);
-
-            int scaledW = (int) (original.getWidth()  * scale);
-            int scaledH = (int) (original.getHeight() * scale);
-
-            // Scale first
-            BufferedImage scaled = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
-            Graphics2D gs = scaled.createGraphics();
-            gs.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            gs.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            gs.drawImage(original, 0, 0, scaledW, scaledH, null);
-            gs.dispose();
-
-            // Center-crop to target
-            int cropX = (scaledW - targetW) / 2;
-            int cropY = (scaledH - targetH) / 2;
-            BufferedImage resized = scaled.getSubimage(cropX, cropY, targetW, targetH);
+            BufferedImage resized = new BufferedImage(targetW, targetH, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = resized.createGraphics();
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g.drawImage(original, 0, 0, targetW, targetH, null);
+            g.dispose();
 
             // Decrease JPEG quality until under 250 KB
             float quality = 0.85f;
