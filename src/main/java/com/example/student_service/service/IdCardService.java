@@ -43,15 +43,30 @@ public class IdCardService {
             BufferedImage original = ImageIO.read(new URL(imageUrl));
             if (original == null) return "";
 
-            // Step 1: Resize to card dimensions (2x for print sharpness)
             int targetW = 140, targetH = 160;
-            BufferedImage resized = new BufferedImage(targetW, targetH, BufferedImage.TYPE_INT_RGB);
-            Graphics2D g = resized.createGraphics();
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g.drawImage(original, 0, 0, targetW, targetH, null);
-            g.dispose();
 
-            // Step 2: Try decreasing JPEG quality until under 250 KB
+            // Scale to fill both dimensions (like object-fit: cover)
+            double scaleX = (double) targetW / original.getWidth();
+            double scaleY = (double) targetH / original.getHeight();
+            double scale  = Math.max(scaleX, scaleY);
+
+            int scaledW = (int) (original.getWidth()  * scale);
+            int scaledH = (int) (original.getHeight() * scale);
+
+            // Scale first
+            BufferedImage scaled = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
+            Graphics2D gs = scaled.createGraphics();
+            gs.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            gs.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            gs.drawImage(original, 0, 0, scaledW, scaledH, null);
+            gs.dispose();
+
+            // Center-crop to target
+            int cropX = (scaledW - targetW) / 2;
+            int cropY = (scaledH - targetH) / 2;
+            BufferedImage resized = scaled.getSubimage(cropX, cropY, targetW, targetH);
+
+            // Decrease JPEG quality until under 250 KB
             float quality = 0.85f;
             byte[] result = null;
 
@@ -82,6 +97,7 @@ public class IdCardService {
             return "";
         }
     }
+
 
     @PostConstruct
     public void init() {
